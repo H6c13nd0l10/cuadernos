@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causa Cuadernos — Expediente de protagonistas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c0f0e;
+    --ink-2:#151a18;
+    --ink-3:#1b211e;
+    --paper:#e9e4d8;
+    --paper-dim:#a7a293;
+    --moss:#3e5c52;
+    --moss-light:#6f9186;
+    --stamp:#8a3f36;
+    --brass:#c9863f;
+    --text:#a7a293;
+    --muted:#7d7a6c;
+    --line:#262b28;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Source Serif 4', serif;
+    line-height:1.55;
+  }
+  ::selection{background:var(--stamp); color:var(--paper);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    color:var(--brass);
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--ink-2);
+    border-bottom:3px solid var(--brass);
+    display:flex; align-items:center; gap:0;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none;}
+  nav a{
+    color:var(--paper-dim);
+    text-decoration:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.7rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:.9rem 1rem;
+    white-space:nowrap;
+    border-right:1px solid var(--line);
+    transition:background .15s, color .15s;
+  }
+  nav a:hover{background:var(--stamp); color:var(--paper);}
+  nav .tag{color:var(--brass); font-weight:700; padding-left:1.2rem;}
+  nav a.active{background:var(--stamp); color:var(--paper);}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    background:
+      radial-gradient(ellipse at 20% -10%, #1c2b26 0%, transparent 55%),
+      var(--ink);
+    color:var(--paper);
+    padding:5.5rem 1.5rem 4rem;
+    position:relative;
+    overflow:hidden;
+    border-bottom:6px double var(--brass);
+  }
+  .hero-inner{max-width:920px; margin:0 auto; position:relative;}
+  .case-number{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.78rem;
+    letter-spacing:.12em;
+    color:var(--moss-light);
+    margin-bottom:1.4rem;
+  }
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(2.6rem, 7vw, 5rem);
+    line-height:.98;
+    margin:0 0 1.1rem;
+    letter-spacing:-.01em;
+  }
+  h1.title em{font-style:italic; font-weight:500; color:var(--brass); display:inline-block;}
+  .hero-sub{font-size:1.05rem; max-width:56ch; color:var(--paper-dim); margin-bottom:2.4rem;}
+  .hero-stats{display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:0; border-top:1px solid var(--line); max-width:640px;}
+  .hero-stats div{border-right:1px solid var(--line); padding:.9rem 1rem .9rem 0;}
+  .hero-stats div:last-child{border-right:none;}
+  .hero-stats b{display:block; font-family:'Fraunces', serif; font-size:1.9rem; font-weight:600; color:var(--paper);}
+  .hero-stats span{font-size:.72rem; color:var(--paper-dim); text-transform:uppercase; letter-spacing:.06em;}
+
+  /* ---------- DISCLAIMER ---------- */
+  .disclaimer{
+    max-width:920px; margin:-1.6rem auto 0; position:relative; z-index:5;
+    background:var(--ink-2); border:2px solid var(--stamp);
+    padding:1.1rem 1.4rem; display:flex; gap:1rem; align-items:flex-start;
+    box-shadow:0 10px 30px rgba(0,0,0,.55);
+  }
+  .disclaimer .stamp-icon{
+    flex:0 0 auto; width:52px; height:52px; border:2.5px solid var(--brass); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; transform:rotate(-8deg);
+    font-family:'IBM Plex Mono', monospace; font-size:.55rem; font-weight:700; color:var(--brass);
+    text-align:center; line-height:1.1; letter-spacing:.02em;
+  }
+  .disclaimer p{margin:0; font-size:.86rem; color:var(--paper-dim);}
+  .disclaimer strong{color:var(--brass);}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:4.5rem 1.5rem; max-width:980px; margin:0 auto; border-bottom:1px solid var(--line);}
+  section.alt{background:var(--ink-3);}
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:.5rem 1.5rem;
+    margin-bottom:.6rem; border-bottom:2px solid var(--moss); padding-bottom:.9rem;
+  }
+  .section-head h2{font-family:'Fraunces', serif; font-size:clamp(1.9rem, 4vw, 2.6rem); margin:0; font-weight:600;}
+  .section-desc{max-width:70ch; color:var(--paper-dim); font-size:.92rem; margin:1rem 0 2.6rem;}
+
+  /* ---------- PERSON ROW ---------- */
+  .roster{display:flex; flex-direction:column; gap:2.6rem;}
+  .person{
+    display:flex; gap:1.8rem; align-items:flex-start;
+    padding-bottom:2.6rem; border-bottom:1px dotted var(--line);
+  }
+  .roster > .person:last-child{border-bottom:none; padding-bottom:0;}
+  .photo-frame{
+    flex:0 0 auto; width:168px; height:168px; border-radius:10px; overflow:hidden;
+    border:1.5px solid var(--brass);
+    background:repeating-linear-gradient(45deg, #1b211e, #1b211e 4px, #222a26 4px, #222a26 8px);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:1.6rem; color:var(--paper);
+  }
+  .photo-frame img{width:100%; height:100%; object-fit:cover; display:block;}
+  @media (max-width:640px){
+    .person{flex-direction:column;}
+    .photo-frame{width:100%; height:220px;}
+  }
+
+  .info{flex:1; min-width:0;}
+  .card-name{font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; line-height:1.15; margin:0 0 .35rem;}
+  .role-tag{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:.63rem; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--paper); background:var(--moss); padding:.18rem .5rem; transform:rotate(-1deg);
+    margin-bottom:.8rem;
+  }
+  .role-tag.rojo{background:var(--stamp);}
+  .role-tag.bronce{background:var(--brass); color:var(--ink);}
+  .info p{margin:0 0 .6rem; font-size:.95rem; color:var(--text); max-width:62ch;}
+
+  .src-list{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.9rem;}
+  .src-list a{
+    font-family:'IBM Plex Mono', monospace; font-size:.66rem; letter-spacing:.02em;
+    color:var(--paper-dim); text-decoration:none; border:1px solid var(--line);
+    padding:.28rem .6rem; border-radius:3px; transition:border-color .15s, color .15s;
+  }
+  .src-list a::before{content:"↗ ";}
+  .src-list a:hover{border-color:var(--brass); color:var(--brass);}
+
+  /* ---------- VIDEOS ---------- */
+  .video-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.6rem;}
+  .video-card{background:var(--ink-2); border:1px solid var(--line);}
+  .video-frame{position:relative; width:100%; padding-top:56.25%; background:#000;}
+  .video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+  .video-meta{padding:1rem 1.1rem 1.2rem;}
+  .video-meta .who{
+    font-family:'IBM Plex Mono', monospace; font-size:.62rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--brass); margin-bottom:.35rem; display:block;
+  }
+  .video-meta h4{font-family:'Fraunces', serif; font-size:1.1rem; margin:0 0 .4rem; font-weight:600;}
+  .video-meta p{margin:0; font-size:.82rem; color:var(--paper-dim);}
+
+  .silence-note{
+    margin-top:2.6rem; padding:1.2rem 1.4rem; background:var(--ink-2); border:1px dashed var(--line);
+    font-size:.85rem; color:var(--paper-dim);
+  }
+  .silence-note strong{color:var(--paper);}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink-2); color:var(--paper-dim); padding:3rem 1.5rem 4rem; font-size:.82rem;}
+  footer .inner{max-width:920px; margin:0 auto;}
+  footer h3{font-family:'Fraunces', serif; color:var(--paper); font-weight:600; font-size:1.3rem; margin-bottom:.6rem;}
+  footer a{color:var(--brass);}
+  footer .grid-links{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.4rem 2rem; margin:1.2rem 0 2rem; font-family:'IBM Plex Mono', monospace; font-size:.72rem;}
+  footer .grid-links a{color:var(--paper-dim); text-decoration:none;}
+  footer .grid-links a:hover{color:var(--brass);}
+  footer .credo{border-top:1px solid var(--line); padding-top:1.4rem; font-style:italic; color:var(--moss-light);}
+
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.show{opacity:1; transform:none;}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <span class="tag">Causa Cuadernos ›</span>
+  <a href="#tribunal">Tribunal</a>
+  <a href="#fiscalia">Fiscalía</a>
+  <a href="#querella">Querella</a>
+  <a href="#imputados">Imputados</a>
+  <a href="#circuito">Circuito financiero</a>
+  <a href="#empresarios">Empresarios</a>
+  <a href="#defensas">Defensas</a>
+  <a href="#videos">Videos</a>
+  <a href="#fuentes">Fuentes</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="case-number">EXPTE. 9608/2018 Y ACUMULADOS — TOF N.° 7, COMODORO PY — EN TRÁMITE</div>
+    <h1 class="title">Cuadernos<br><em>de las coimas</em></h1>
+    <p class="hero-sub">Un expediente de protagonistas del mayor juicio de corrupción de la historia argentina: quién acusa, quién juzga, quién está imputado y qué sostiene cada parte. Actualizado al 18 de agosto de 2026.</p>
+    <div class="hero-stats">
+      <div><b>86</b><span>Imputados</span></div>
+      <div><b>25</b><span>Arrepentidos</span></div>
+      <div><b>2003–15</b><span>Período investigado</span></div>
+      <div><b>899</b><span>Testigos citados</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="disclaimer">
+  <div class="stamp-icon">SIN<br>SENTENCIA<br>FIRME</div>
+  <p>Este juicio está <strong>en trámite</strong>, sin sentencia. Todo lo que sigue —acusaciones, roles, montos— es <strong>lo que sostienen las partes</strong>: la fiscalía, la querella (UIF) y los testimonios de imputados colaboradores ("arrepentidos"), cuya validez están debatiendo las defensas en el propio juicio. Rige la <strong>presunción de inocencia</strong> para todas las personas imputadas hasta que exista condena firme.</p>
+</div>
+
+<!-- ============ TRIBUNAL ============ -->
+<section id="tribunal">
+  <div class="section-head">
+    <h2>El Tribunal</h2>
+    <span class="eyebrow">TOF N.° 7 — Comodoro Py</span>
+  </div>
+  <p class="section-desc">Los jueces a cargo de conducir el debate, resolver los planteos de las partes y, eventualmente, dictar veredicto.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/mendez-signori.jpg" alt="Enrique Méndez Signori"></div>
+      <div class="info">
+        <div class="card-name">Enrique Méndez Signori</div>
+        <span class="role-tag">Presidente del tribunal</span>
+        <p>Conduce las audiencias, fija el cronograma y anunció el régimen de dos audiencias semanales para agilizar el debate. Fue quien confirmó la fecha de indagatoria presencial de Cristina Kirchner.</p>
+        <div class="src-list">
+          <a href="https://www.fiscales.gob.ar/fiscalias/causa-cuadernos-continuo-la-lectura-de-la-acusacion-en-el-juicio-a-la-expresidenta-cristina-fernandez-y-otros-86-imputados/" target="_blank" rel="noopener">fiscales.gob.ar</a>
+          <a href="https://www.diariodecuyo.com.ar/argentina/cristina-fernandez-kirchner-ira-hoy-declarar-comodoro-py-la-causa-cuadernos-n6568365" target="_blank" rel="noopener">diariodecuyo.com.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/canero.jpg" alt="Fernando Canero"></div>
+      <div class="info">
+        <div class="card-name">Fernando Canero</div>
+        <span class="role-tag">Vocal</span>
+        <p>Rechazó un pedido de apartamiento por "temor de parcialidad" planteado por la defensa de Ricardo Jaime, calificándolo de improcedente.</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2026/03/01/juicio-por-la-causa-cuadernos-el-tribunal-define-si-rechaza-las-nulidades-y-avanza-hacia-las-indagatorias/" target="_blank" rel="noopener">infobae.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/castelli.jpg" alt="Germán Castelli"></div>
+      <div class="info">
+        <div class="card-name">Germán Castelli</div>
+        <span class="role-tag">Vocal</span>
+        <p>Votó en contra de intervenciones excepcionales del tribunal pleno ante pedidos de la fiscalía, remitiendo definiciones al momento del veredicto.</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2026/04/21/causa-cuadernos-el-tribunal-oral-federal-7-interroga-a-siete-empresarios-acusados-de-cohecho/" target="_blank" rel="noopener">infobae.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/costabel.jpg" alt="Néstor Costabel"></div>
+      <div class="info">
+        <div class="card-name">Néstor Costabel</div>
+        <span class="role-tag bronce">Cuarto juez (suplente)</span>
+        <p>Se incorporó al tribunal en reemplazo de la jueza Gabriela López Iñiguez, recusada a pedido del Ministerio Público Fiscal.</p>
+        <div class="src-list">
+          <a href="https://www.fiscales.gob.ar/fiscalias/causa-cuadernos-continuo-la-lectura-de-la-acusacion-en-el-juicio-a-la-expresidenta-cristina-fernandez-y-otros-86-imputados/" target="_blank" rel="noopener">fiscales.gob.ar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FISCALIA ============ -->
+<section id="fiscalia" class="alt">
+  <div class="section-head">
+    <h2>La Fiscalía</h2>
+    <span class="eyebrow">Ministerio Público Fiscal</span>
+  </div>
+  <p class="section-desc">Sostiene la acusación en el debate oral. La instrucción previa —siete años de investigación— estuvo a cargo de otro fiscal, hoy sin intervención en la etapa de debate.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/fabiana-leon.jpg" alt="Fabiana León"></div>
+      <div class="info">
+        <div class="card-name">Fabiana León</div>
+        <span class="role-tag rojo">Fiscal general — acusadora en el debate</span>
+        <p>Titular de la Fiscalía General N.° 5 ante los TOF. Definió la causa como "la investigación de corrupción más extensa de la historia judicial argentina". Rechazó los ofrecimientos de "reparación integral" de empresarios que buscaban evitar el juicio, sosteniendo que aceptarlos implicaría "tarifar la impunidad".</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2025/10/06/causa-cuadernos-la-justicia-rechazo-las-reparaciones-de-dinero-ofrecidas-por-empresarios-para-ser-absueltos/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://www.diariodecuyo.com.ar/argentina/cristina-fernandez-kirchner-ira-hoy-declarar-comodoro-py-la-causa-cuadernos-n6568365" target="_blank" rel="noopener">diariodecuyo.com.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/stornelli.jpg" alt="Carlos Stornelli"></div>
+      <div class="info">
+        <div class="card-name">Carlos Stornelli</div>
+        <span class="role-tag bronce">Fiscal instructor (etapa cerrada)</span>
+        <p>Llevó adelante la investigación desde 2018 junto al fallecido juez Claudio Bonadio, y formuló los sucesivos requerimientos de elevación a juicio. Ya no interviene en el debate oral.</p>
+        <div class="src-list">
+          <a href="https://www.fiscales.gob.ar/fiscalias/causa-cuadernos-culmino-la-lectura-de-las-acusaciones-y-el-juicio-continuara-en-febrero/" target="_blank" rel="noopener">fiscales.gob.ar</a>
+          <a href="https://es.wikipedia.org/wiki/Causa_de_los_cuadernos" target="_blank" rel="noopener">es.wikipedia.org</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/codromaz.jpg" alt="Nicolás Codromaz"></div>
+      <div class="info">
+        <div class="card-name">Nicolás Codromaz</div>
+        <span class="role-tag">Fiscal coadyuvante</span>
+        <p>Integra el equipo de la Fiscalía General N.° 5 que acompaña a León en el debate. Ficha en construcción — falta cobertura periodística específica sobre su rol.</p>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/ambrosio-nimis.jpg" alt="Guido Ambrosio y Claudio Nimis"></div>
+      <div class="info">
+        <div class="card-name">Guido Ambrosio y Claudio Nimis</div>
+        <span class="role-tag">Auxiliares fiscales</span>
+        <p>Completan el equipo del Ministerio Público Fiscal en las audiencias. Ficha compartida — falta cobertura individual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUERELLA ============ -->
+<section id="querella">
+  <div class="section-head">
+    <h2>La Querella</h2>
+    <span class="eyebrow">Unidad de Información Financiera (UIF)</span>
+  </div>
+  <p class="section-desc">El organismo antilavado del Estado se constituyó como parte querellante. Su legitimidad para intervenir fue cuestionada varias veces por las defensas, pero el tribunal la ratificó en todas las instancias.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/galpern.jpg" alt="Mariano Galpern"></div>
+      <div class="info">
+        <div class="card-name">Mariano Galpern</div>
+        <span class="role-tag rojo">Abogado — director de litigios penales, UIF</span>
+        <p>Representa a la UIF en cada audiencia. Calificó a Cristina Kirchner como "la jefa de la asociación ilícita" en su alegato de apertura y sostuvo, ante los planteos de nulidad de las defensas, que "no existe ninguna nulidad que invalide este proceso".</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2025/12/04/el-juicio-a-los-cuadernos-continua-la-acusacion-a-los-empresarios-de-la-camarita/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://elargentinodiario.com.ar/judiciales/lawfare/10/09/2025/causa-cuadernos-el-tribunal-rechaza-planteo-empresarial-y-ratifica-a-la-uif-como-querellante/" target="_blank" rel="noopener">elargentinodiario.com.ar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IMPUTADOS ============ -->
+<section id="imputados" class="alt">
+  <div class="section-head">
+    <h2>Los Imputados</h2>
+    <span class="eyebrow">Cúpula política — según la acusación</span>
+  </div>
+  <p class="section-desc">Los cuatro nombres que sostienen el eje político de la acusación: la hipótesis fiscal sostiene que existió una asociación ilícita comandada desde el Ministerio de Planificación Federal.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/cfk.jpg" alt="Cristina Fernández de Kirchner"></div>
+      <div class="info">
+        <div class="card-name">Cristina Fernández de Kirchner</div>
+        <span class="role-tag rojo">Principal acusada</span>
+        <p>Expresidenta. Imputada como presunta jefa de la asociación ilícita y por 204 hechos de cohecho pasivo. Declaró de manera presencial el 17 de marzo de 2026 durante 45 minutos, sin responder preguntas: cuestionó a los jueces y fiscales y advirtió que podría "morir presa". Cumple prisión domiciliaria por la causa Vialidad (otro expediente). Su defensor es Carlos Beraldi.</p>
+        <div class="src-list">
+          <a href="https://www.fiscales.gob.ar/fiscalias/causa-cuadernos-con-la-lectura-de-parte-de-la-acusacion-comenzo-el-juicio-contra-la-expresidenta-cristina-fernandez-y-otros-86-imputados/" target="_blank" rel="noopener">fiscales.gob.ar</a>
+          <a href="https://www.infobae.com/politica/2026/03/17/cristina-kirchner-en-vivo-las-ultimas-noticias-sobre-la-declaracion-en-comodoro-py-por-la-causa-cuadernos/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://www.ambito.com/politica/cristina-kirchner-confirmo-su-indagatoria-presencial-la-causa-cuadernos-y-volvio-criticar-el-rumbo-economico-javier-milei-n6256669" target="_blank" rel="noopener">ambito.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/de-vido.jpg" alt="Julio De Vido"></div>
+      <div class="info">
+        <div class="card-name">Julio De Vido</div>
+        <span class="role-tag rojo">Exministro de Planificación Federal</span>
+        <p>Según la acusación, coordinaba el esquema desde su ministerio. Detenido en Ezeiza. Se negó a declarar en su indagatoria del 17 de marzo de 2026 — Baratta tomó la palabra inmediatamente después de esa negativa.</p>
+        <div class="src-list">
+          <a href="https://www.perfil.com/noticias/internacional/quienes-son-los-empresarios-involucrados-en-el-juicio-contra-cristina-kirchner-por-la-causa-cuadernos.phtml" target="_blank" rel="noopener">perfil.com</a>
+          <a href="https://www.infobae.com/judiciales/2026/03/17/causa-cuadernos-en-un-fuerte-descargo-roberto-baratta-tildo-al-ex-chofer-oscar-centeno-de-mentiroso/" target="_blank" rel="noopener">infobae.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/baratta.jpg" alt="Roberto Baratta"></div>
+      <div class="info">
+        <div class="card-name">Roberto Baratta</div>
+        <span class="role-tag rojo">Exsubsecretario de Planificación</span>
+        <p>Nexo operativo del esquema: jefe directo de Oscar Centeno. A diferencia de De Vido, sí declaró — extensamente y en varias ampliaciones — tildando a Centeno de "mentiroso" y cuestionando a los arrepentidos, a quienes calificó de "apretados" y "extorsionados". Chocó públicamente con el testigo Roberto Lavagna, a quien llamó "hipócrita".</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2026/03/17/causa-cuadernos-en-un-fuerte-descargo-roberto-baratta-tildo-al-ex-chofer-oscar-centeno-de-mentiroso/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://www.lanacion.com.ar/politica/cuadernos-de-las-coimas-roberto-baratta-pidio-ampliar-su-indagatoria-para-desmentir-a-un-testigo-nid11062026/" target="_blank" rel="noopener">lanacion.com.ar</a>
+          <a href="https://noticias.perfil.com/noticias/politica/causa-cuadernos-el-secretario-de-baratta-que-cobro-68-coimas-y-es-clave-en-el-juicio.phtml" target="_blank" rel="noopener">perfil.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/jose-lopez.jpg" alt="José López"></div>
+      <div class="info">
+        <div class="card-name">José López</div>
+        <span class="role-tag rojo">Exsecretario de Obras Públicas</span>
+        <p>El "hombre de los bolsos". Primer exfuncionario en pedir la figura de arrepentido, en 2018. En su declaración del 30 de abril de 2026 se retractó parcialmente: dijo que "si me hubiera encontrado en otra situación anímica y de salud" no habría declarado como arrepentido, y sostuvo que "nunca integré una asociación ilícita". A partir de su testimonio, el tribunal restringió la transmisión pública del juicio.</p>
+        <div class="src-list">
+          <a href="https://www.ambito.com/politica/causa-cuadernos-jose-lopez-se-arrepintio-haber-declarado-como-arrepentido-n6272536" target="_blank" rel="noopener">ambito.com</a>
+          <a href="https://www.perfil.com/noticias/politica/ya-declara-jose-lopez-por-la-causa-cuadernos.phtml" target="_blank" rel="noopener">perfil.com</a>
+          <a href="https://revistaquorum.com.ar/2026/04/30/cuadernos-jose-lopez-se-sumo-a-la-lista-de-los-arrepentidos-que-se-retractan-y-no-aceptan-preguntas/" target="_blank" rel="noopener">revistaquorum.com.ar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CIRCUITO FINANCIERO ============ -->
+<section id="circuito">
+  <div class="section-head">
+    <h2>El Circuito Financiero</h2>
+    <span class="eyebrow">Los dos pilares probatorios</span>
+  </div>
+  <p class="section-desc">Toda la causa se apoya en dos fuentes: el registro manuscrito de un chofer y la confesión de un financista. Ambos, durante el juicio oral, se acogieron a su derecho a no responder preguntas de las partes.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/centeno.jpg" alt="Oscar Centeno"></div>
+      <div class="info">
+        <div class="card-name">Oscar Centeno</div>
+        <span class="role-tag bronce">Exchofer — autor de los cuadernos</span>
+        <p>Chofer de Roberto Baratta. Durante años anotó en ocho cuadernos manuscritos los traslados de dinero entre empresarios y funcionarios. Los dejó a resguardo de un expolicía conocido, Jorge Bacigalupo, quien se los hizo llegar al periodista Diego Cabot en 2018. Una pericia caligráfica confirmó que es el autor. Ratificó vía Zoom ser el autor de las anotaciones, pero durante el juicio oral no respondió preguntas.</p>
+        <div class="src-list">
+          <a href="https://es.wikipedia.org/wiki/Causa_de_los_cuadernos" target="_blank" rel="noopener">es.wikipedia.org</a>
+          <a href="https://www.lanacion.com.ar/politica/cuadernos-de-las-coimas-tercera-audiencia-se-leeran-los-aportes-de-los-arrepentidos-y-el-rol-de-nid20112025/" target="_blank" rel="noopener">lanacion.com.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/clarens.jpg" alt="Ernesto Clarens"></div>
+      <div class="info">
+        <div class="card-name">Ernesto Clarens</div>
+        <span class="role-tag bronce">Financista — Invernes</span>
+        <p>Señalado como el principal recaudador y "cambista": recibía el dinero de las empresas, lo convertía a dólares y se lo entregaba a José López. Describió el funcionamiento interno de "La Camarita" en su confesión de 2018 ante Bonadio y Stornelli. También vinculado a la financiera de Lázaro Báez. No respondió preguntas durante el juicio oral.</p>
+        <div class="src-list">
+          <a href="https://www.fenix951.com.ar/noticia.php?id=323976" target="_blank" rel="noopener">fenix951.com.ar</a>
+          <a href="https://www.agenciacomunas.com.ar/causa-cuadernos-la-justicia-perdio-el-juicio/" target="_blank" rel="noopener">agenciacomunas.com.ar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EMPRESARIOS ============ -->
+<section id="empresarios" class="alt">
+  <div class="section-head">
+    <h2>Los Empresarios</h2>
+    <span class="eyebrow">De 65 imputados, los de mayor peso narrativo e institucional</span>
+  </div>
+  <p class="section-desc">Ordenados por relevancia para seguir el juicio, no alfabéticamente. El resto de los 65 empresarios imputados figura en el informe completo de actores.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/calcaterra.jpg" alt="Ángelo Calcaterra"></div>
+      <div class="info">
+        <div class="card-name">Ángelo Calcaterra</div>
+        <span class="role-tag bronce">IECSA</span>
+        <p>Primo de Mauricio Macri. Se quebró en agosto de 2018 con una confesión detallada de fuerte impacto simbólico. Como arrepentido, durante el juicio oral se negó a declarar y a responder preguntas — al igual que su mano derecha en la empresa, Javier Sánchez Caballero.</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2025/12/09/nueva-audiencia-del-juicio-por-los-cuadernos-de-la-corrupcion-la-acusacion-que-desnudo-el-vinculo-entre-politicos-y-empresarios/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://www.letrap.com.ar/politica/los-cuadernos-k-oscar-centeno-y-otros-acusados-contra-centeno-n5422890" target="_blank" rel="noopener">letrap.com.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/wagner.jpg" alt="Carlos Wagner"></div>
+      <div class="info">
+        <div class="card-name">Carlos Wagner</div>
+        <span class="role-tag bronce">Expresidente Cámara Arg. de la Construcción</span>
+        <p>Relató que De Vido lo citó en 2004 para exigirle "garantizar el éxito" de licitaciones a favor del gobierno, y que la obra pública iba a ser "uno de los métodos de recaudación" política. Uno de los testimonios más citados para explicar el mecanismo desde adentro.</p>
+        <div class="src-list">
+          <a href="https://www.lanacion.com.ar/politica/caso-cuadernos-roberto-lavagna-declaro-que-se-detectaron-sobreprecios-del-20-en-el-area-de-vialidad-nid04062026/" target="_blank" rel="noopener">lanacion.com.ar</a>
+          <a href="https://www.a24.com/politica/causa-cuadernos-que-declararon-los-empresarios-arrepentidos-y-como-describieron-el-sistema-coimas-n1506901" target="_blank" rel="noopener">a24.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/roggio.jpg" alt="Aldo Roggio"></div>
+      <div class="info">
+        <div class="card-name">Aldo Roggio</div>
+        <span class="role-tag bronce">Grupo Roggio</span>
+        <p>Relató haber sufrido "aprietes" durante el kirchnerismo: según su testimonio, De Vido le dijo que "no se puede hacer política sin plata". Durante el juicio oral se negó a declarar. Una pericia de ARCA (exAFIP) ratificó retiros en efectivo de más de USD 2 millones en su grupo empresario entre 2008 y 2009.</p>
+        <div class="src-list">
+          <a href="https://www.perfil.com/noticias/judiciales/causa-cuadernos-los-arrepentidos-detallan-la-camarita-y-apuntan-a-cristina-kirchner.phtml" target="_blank" rel="noopener">perfil.com</a>
+          <a href="https://www.infobae.com/judiciales/2026/07/16/juicio-por-la-causa-de-los-cuadernos-en-vivo-las-ultimas-noticias-de-hoy-16-de-julio-minuto-a-minuto/" target="_blank" rel="noopener">infobae.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/ferreyra.jpg" alt="Gerardo Ferreyra"></div>
+      <div class="info">
+        <div class="card-name">Gerardo Ferreyra</div>
+        <span class="role-tag">Electroingeniería</span>
+        <p>A diferencia de otros empresarios imputados, rechazó haber entregado dinero a Uberti o Clarens, y reclamó —sin éxito— un careo con quienes lo señalan en el expediente.</p>
+        <div class="src-list">
+          <a href="https://www.perfil.com/noticias/judiciales/causa-cuadernos-los-arrepentidos-detallan-la-camarita-y-apuntan-a-cristina-kirchner.phtml" target="_blank" rel="noopener">perfil.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/pescarmona.jpg" alt="Enrique Pescarmona"></div>
+      <div class="info">
+        <div class="card-name">Enrique Pescarmona</div>
+        <span class="role-tag">IMPSA — sobreseído</span>
+        <p>El tribunal lo sobreseyó en 2025 tras un informe del Cuerpo Médico Forense que concluyó que presentaba una incapacidad para comprender el proceso. Ya no es parte activa del juicio, pero se mantiene en esta ficha por el peso de su empresa en la acusación.</p>
+        <div class="src-list">
+          <a href="https://www.diariodecuyo.com.ar/argentina/causa-cuadernos-desde-ahora-habra-dos-audiencias-semanales-1802680.html" target="_blank" rel="noopener">diariodecuyo.com.ar</a>
+          <a href="https://www.lanacion.com.ar/politica/cuadernos-de-las-coimas-tercera-audiencia-se-leeran-los-aportes-de-los-arrepentidos-y-el-rol-de-nid20112025/" target="_blank" rel="noopener">lanacion.com.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/lascurain.jpg" alt="Juan Carlos Lascurain"></div>
+      <div class="info">
+        <div class="card-name">Juan Carlos Lascurain</div>
+        <span class="role-tag">Expresidente UIA</span>
+        <p>Expresidente de la Unión Industrial Argentina, uno de los nombres de mayor peso institucional entre los empresarios imputados.</p>
+        <div class="src-list">
+          <a href="https://elargentinodiario.com.ar/judiciales/lawfare/10/09/2025/causa-cuadernos-el-tribunal-rechaza-planteo-empresarial-y-ratifica-a-la-uif-como-querellante/" target="_blank" rel="noopener">elargentinodiario.com.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/dragonetti.jpg" alt="Hugo Dragonetti"></div>
+      <div class="info">
+        <div class="card-name">Hugo Dragonetti</div>
+        <span class="role-tag">Panedile</span>
+        <p>Su empresa está vinculada al primer pago relatado por la acusación: USD 1,5 millones recolectados por Baratta y Lazarte. Durante la instrucción, sus defensores denunciaron que Bonadio y Stornelli lo hicieron desfilar con casco y chaleco antibalas para intimidarlo. Se negó a declarar en el juicio oral.</p>
+        <div class="src-list">
+          <a href="https://www.diariodecuyo.com.ar/noticias/de-vido-cercado-por-sobreprecio-en-obras-567700.html" target="_blank" rel="noopener">diariodecuyo.com.ar</a>
+          <a href="https://tucuman24.com/nota/210498/causa-cuadernos-el-juez-bonadio-y-el-fiscal-stornelli-apuntados-por-coaccion-y-amenazas-en-la-causa.html" target="_blank" rel="noopener">tucuman24.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEFENSAS ============ -->
+<section id="defensas" class="alt">
+  <div class="section-head">
+    <h2>Las Defensas</h2>
+    <span class="eyebrow">Abogados de los principales imputados</span>
+  </div>
+  <p class="section-desc">Son 88 abogados en total, uno de los rasgos que explica la lentitud del proceso. Estos cuatro representan a los imputados de mayor peso en la causa. Todos coinciden en un eje común: cuestionar la validez de las confesiones de los arrepentidos y denunciar coacciones durante la instrucción de Bonadio y Stornelli.</p>
+
+  <div class="roster">
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/beraldi.jpg" alt="Carlos Beraldi"></div>
+      <div class="info">
+        <div class="card-name">Carlos Beraldi</div>
+        <span class="role-tag">Defensor de Cristina Fernández de Kirchner</span>
+        <p>Junto con Ary Llernovoy, es el abogado más visible del juicio. Pidió formalmente la nulidad de todo el proceso, denunciando "forum shopping" y una "estafa de los arrepentidos". Reclamó, sin éxito, que Centeno declarara en persona para poder contrainterrogarlo. Presentó ante el tribunal una recopilación de casi 30 relatos de presuntos aprietes durante la instrucción.</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2026/02/03/causa-cuadernos-se-reanudan-las-audiencias-y-la-defensa-de-cristina-kirchner-reclamara-por-la-nulidad-del-juicio/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://www.infobae.com/judiciales/2026/03/19/la-fiscal-de-la-causa-cuadernos-cruzo-a-los-abogados-defensores-tienen-autoestima-a-prueba-de-todo/" target="_blank" rel="noopener">infobae.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/rusconi.jpg" alt="Maximiliano Rusconi"></div>
+      <div class="info">
+        <div class="card-name">Maximiliano Rusconi</div>
+        <span class="role-tag">Defensor de Julio De Vido</span>
+        <p>Junto con Gabriel Palmeiro, pidió la nulidad de todo lo actuado y la suspensión del juicio hasta incorporar pruebas pendientes. Sostiene que la imposibilidad de contrainterrogar a los arrepentidos que guardan silencio "vulnera el derecho a defensa".</p>
+        <div class="src-list">
+          <a href="https://www.eldestapeweb.com/politica/cuadernos-como-sigue-el-juicio-tras-los-pedidos-de-nulidad-y-la-denuncia-contra-centeno-2026270558" target="_blank" rel="noopener">eldestapeweb.com</a>
+          <a href="https://www.politicargentina.com/notas/202605/73399-causa-cuadernos-27-imputados-denuncian-aprietes-de-stornelli-y-bonadio-para-incriminar-a-cristina-kirchner.html" target="_blank" rel="noopener">politicargentina.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/gomez-alcorta.jpg" alt="Elizabeth Gómez Alcorta"></div>
+      <div class="info">
+        <div class="card-name">Elizabeth Gómez Alcorta</div>
+        <span class="role-tag">Defensora de Roberto Baratta</span>
+        <p>Exministra de las Mujeres, Géneros y Diversidad de la Nación (2019–2023). Junto con Marcos Aldazabal, defiende a Baratta y presentó una denuncia penal contra Oscar Centeno. Interrogó extensamente al periodista Diego Cabot y al exfuncionario vial Javier Iguacel durante el juicio.</p>
+        <div class="src-list">
+          <a href="https://www.infobae.com/judiciales/2026/08/04/juicio-por-la-causa-de-los-cuadernos-en-vivo-las-ultimas-noticias-de-hoy-4-de-agosto/" target="_blank" rel="noopener">infobae.com</a>
+          <a href="https://www.fiscales.gob.ar/fiscalias/causa-cuadernos-culmino-la-lectura-de-las-acusaciones-y-el-juicio-continuara-en-febrero/" target="_blank" rel="noopener">fiscales.gob.ar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="person reveal">
+      <div class="photo-frame"><img src="fotos/ubeira.jpg" alt="José Manuel Ubeira"></div>
+      <div class="info">
+        <div class="card-name">José Manuel Ubeira</div>
+        <span class="role-tag">Defensor de Oscar Thomas (exdirector de Yacyretá)</span>
+        <p>Una de las voces más combativas del juicio. Fue blanco de una maniobra de espionaje del falso abogado Marcelo D'Alessio, orquestada —según denunció— a pedido del propio fiscal Stornelli. En el juicio cuestionó abiertamente la utilidad de la ley del arrepentido: "¿para qué la necesitamos?", interpeló.</p>
+        <div class="src-list">
+          <a href="https://www.perfil.com/noticias/columnistas/la-prensa-los-alertadores-y-un-programa-de-proteccion-de-fuentes.phtml" target="_blank" rel="noopener">perfil.com</a>
+          <a href="https://www.impactocorrientes.com/notix/noticia/242490/causa_cuadernos_las_defensas_denunciaron_un_fraude_judicial_y_pidieron_la_nulidad_del_proceso.htm" target="_blank" rel="noopener">impactocorrientes.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEOS ============ -->
+<section id="videos">
+  <div class="section-head">
+    <h2>Videos del juicio</h2>
+    <span class="eyebrow">Declaraciones e indagatorias — transmitidas públicamente</span>
+  </div>
+  <p class="section-desc">La primera audiencia contiene la lectura íntegra de la acusación contra los 86 imputados (~5 hs). Las demás son las indagatorias de protagonistas específicos, tal como se transmitieron por YouTube.</p>
+
+  <div class="video-grid">
+    <div class="video-card reveal">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/cdUVUNqIXjI" title="Primera audiencia — lectura de la acusación" allowfullscreen></iframe></div>
+      <div class="video-meta">
+        <span class="who">Apertura del juicio — 6 nov. 2025</span>
+        <h4>Lectura íntegra de la acusación contra los 86 imputados</h4>
+        <p>~5 horas. El documento audiovisual más completo: contiene los cargos formales contra cada acusado.</p>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/UEoQFD5rrUY" title="Declaración de Cristina Kirchner" allowfullscreen></iframe></div>
+      <div class="video-meta">
+        <span class="who">Cristina Fernández de Kirchner — 17 mar. 2026</span>
+        <h4>Indagatoria presencial en el TOF 7</h4>
+        <p>45 minutos. No respondió preguntas del tribunal ni de las partes.</p>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/ZBAUWNs0IJc" title="Declaración de José López" allowfullscreen></iframe></div>
+      <div class="video-meta">
+        <span class="who">José López — 30 abr. 2026</span>
+        <h4>Declaración y retractación parcial como arrepentido</h4>
+        <p>El testimonio que, según la cobertura, "más complicó" a Cristina Kirchner — con matices sobre el estado en que firmó su confesión original.</p>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/YELR5DuhLaY" title="Declaración de Diego Cabot" allowfullscreen></iframe></div>
+      <div class="video-meta">
+        <span class="who">Diego Cabot (periodista) — mayo 2026</span>
+        <h4>Testimonio sobre el origen de los cuadernos</h4>
+        <p>El periodista que recibió los cuadernos originales de un conocido de Centeno en 2018 relató cómo llegaron a la Justicia.</p>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/HfdDgidR5jQ" title="Chats de Baratta con De Vido" allowfullscreen></iframe></div>
+      <div class="video-meta">
+        <span class="who">Roberto Baratta — cobertura de audiencia</span>
+        <h4>Chats y videos inéditos con De Vido y Kirchner</h4>
+        <p>Material exhibido en el juicio sobre comunicaciones entre los principales imputados de la cúpula política.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="silence-note">
+    <strong>Sobre el silencio en el juicio:</strong> Oscar Centeno, Ernesto Clarens, Ángelo Calcaterra y Aldo Roggio —cuatro de los testimonios más determinantes para la acusación— se acogieron a su derecho a no responder preguntas durante el debate oral. No hay video de su indagatoria en este juicio: su prueba principal son las confesiones de 2018, incorporadas por secretaría, no repetidas ante cámara.
+  </div>
+</section>
+
+<!-- ============ FUENTES ============ -->
+<footer id="fuentes">
+  <div class="inner">
+    <h3>Fuentes generales</h3>
+    <p>Además de los links puntuales debajo de cada ficha, estas cubren el contexto general de la causa.</p>
+    <div class="grid-links">
+      <a href="https://es.wikipedia.org/wiki/Causa_de_los_cuadernos" target="_blank" rel="noopener">Wikipedia — Causa de los cuadernos</a>
+      <a href="https://www.fiscales.gob.ar/fiscalias/causa-cuadernos-con-la-lectura-de-parte-de-la-acusacion-comenzo-el-juicio-contra-la-expresidenta-cristina-fernandez-y-otros-86-imputados/" target="_blank" rel="noopener">Fiscales.gob.ar — inicio del juicio</a>
+      <a href="https://www.eldiarioar.com/politica/causa-cuadernos-centeno-cfk-arrepentidos-causa-lista-completa-admitidos-prueba_1_12591819.html" target="_blank" rel="noopener">El DiarioAR — lista de arrepentidos</a>
+      <a href="https://qpaso.ar/noticias/clarin/politica/causa-cuadernos-164-coimas-leeran-cristina-juicio-empresarios-pagaron-obras_0_ZRV3JROzH5.html" target="_blank" rel="noopener">Clarín/qpasó — listado de obras y sobreprecios</a>
+      <a href="https://www.infobae.com/juicio-por-la-causa-de-los-cuadernos/" target="_blank" rel="noopener">Infobae — cobertura día a día del juicio</a>
+      <a href="https://chequeado.com/el-explicador/causa-cuadernos-las-5-claves-del-juicio-contra-cristina-fernandez-de-kirchner-ex-funcionarios-y-empresarios/" target="_blank" rel="noopener">Chequeado — las 5 claves del juicio</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target); } });
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const links = document.querySelectorAll('#topnav a[href^="#"]');
+  const secs = [...links].map(a=>document.querySelector(a.getAttribute('href')));
+  const navObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = '#'+entry.target.id;
+        links.forEach(l=> l.classList.toggle('active', l.getAttribute('href')===id));
+      }
+    });
+  }, {rootMargin:'-40% 0px -55% 0px'});
+  secs.forEach(s=> s && navObs.observe(s));
+</script>
+</body>
+</html>
